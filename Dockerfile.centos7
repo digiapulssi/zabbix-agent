@@ -1,0 +1,24 @@
+FROM centos:7
+
+# Zabbix agent build prerequisites
+RUN yum install -y git autoconf autoheader automake wget unzip gcc glibc-static
+RUN wget http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm && rpm -Uvh epel-release*rpm
+RUN yum install -y rpm-build fedora-packager
+
+# Required for Zabbix tarball compiling
+RUN yum install -y ruby rubygems
+RUN gem install sass --version '=3.4.22'
+
+# Required by Zabbix SRPM spec that builds Zabbix server and proxy in addition to the agent
+RUN yum install -y mysql-devel postgresql-devel net-snmp-devel openldap-devel gnutls-devel sqlite-devel unixODBC-devel curl-devel OpenIPMI-devel java-devel libxml2-devel openssl-devel iksemel-devel libssh2-devel gettext
+
+# Build script
+WORKDIR /build
+COPY build.sh /build.sh
+RUN chmod a+x /build.sh
+CMD /build.sh
+ENV ZABBIX_VERSION=3.2.3
+ENV PULSSI_RELEASE_VERSION=0
+ENV URL_ZABBIX_SRPM http://repo.zabbix.com/zabbix/3.2/rhel/7/SRPMS/zabbix-3.2.3-1.el7.src.rpm
+ENV RPMBUILD=/root/rpmbuild
+

@@ -1,0 +1,47 @@
+FROM centos:5
+
+# Centos 5 is end-of-line, use archive repos
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-Base.repo
+RUN sed -i 's/#baseurl=http:\/\/mirror.centos.org\/centos\/$releasever/baseurl=http:\/\/vault.centos.org\/5.11/g' /etc/yum.repos.d/CentOS-Base.repo
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/libselinux.repo
+RUN sed -i 's/#baseurl=http:\/\/mirror.centos.org\/centos\/$releasever/baseurl=http:\/\/vault.centos.org\/5.11/g' /etc/yum.repos.d/libselinux.repo
+
+# Zabbix agent build prerequisites
+RUN yum install -y git autoconf autoheader automake wget unzip gcc glibc-static
+RUN wget http://archives.fedoraproject.org/pub/archive/epel/5/x86_64/epel-release-5-4.noarch.rpm && rpm -Uvh epel-release*rpm
+RUN yum install -y rpm-build fedora-packager
+
+# Required for Zabbix tarball compiling
+
+# Ruby must be >=1.8.7 which does not come for CentOS 5 without manual compiling..
+RUN yum install -y gcc zlib zlib-devel make
+RUN wget ftp://ftp.ruby-lang.org/pub/ruby/1.8/ruby-1.8.7-p330.tar.gz && \
+    tar xvf ruby-1.8.7-p330.tar.gz && \
+    cd ruby-1.8.7-p330 && \
+    ./configure --enable-pthread && \
+    make && \
+    make install
+RUN wget http://production.cf.rubygems.org/rubygems/rubygems-1.8.25.tgz && \
+    tar xvzf rubygems-1.8.25.tgz && \
+    cd rubygems-1.8.25 && \
+    ruby setup.rb config && \
+    ruby setup.rb setup && \
+    ruby setup.rb install
+RUN gem install sass --version '=3.4.22'
+
+# Required by Zabbix SRPM spec that builds Zabbix server and proxy in addition to the agent
+RUN yum install -y mysql-devel postgresql-devel net-snmp-devel openldap-devel gnutls-devel sqlite-devel unixODBC-devel curl-devel OpenIPMI-devel java-devel libxml2-devel openssl-devel iksemel-devel gettext
+
+# libssh2-devel must be >= 1.0.0 which is not provided by default from yum repos
+RUN rpm -ivh http://ftp.cs.stanford.edu/pub/rpms/centos/5/x86_64/libssh2-1.2.7-1.el5.remi.x86_64.rpm
+RUN rpm -ivh http://ftp.cs.stanford.edu/pub/rpms/centos/5/x86_64/libssh2-devel-1.2.7-1.el5.remi.x86_64.rpm
+
+# Build script
+WORKDIR /build
+COPY build.sh /build.sh
+RUN chmod a+x /build.sh
+CMD /build.sh
+ENV ZABBIX_VERSION=3.2.3
+ENV PULSSI_RELEASE_VERSION=0
+ENV URL_ZABBIX_SRPM http://repo.zabbix.com/zabbix/3.2/rhel/5/SRPMS/zabbix-3.2.3-1.el5.src.rpm
+ENV RPMBUILD=/usr/src/redhat
