@@ -22,7 +22,7 @@ Download the latest installation packages from https://github.com/digiapulssi/za
 Install the RPM package with the following command:
 
 ```
-yum localinstall zabbix-agent-VERSION.digiapulssi.elVER.x86_64.rpm
+yum localinstall zabbix-agent-VERSION.digiapulssi.DISTRIBUTION.x86_64.rpm
 (for CentOS/RedHat/Oracle Linux 5.x you need to add --nogpgcheck flag)
 ```
 
@@ -109,23 +109,24 @@ chmod 0644 /etc/zabbix/zabbix-agentd.d/SCRIPTNAME.conf
 
 # How to Release a New Version (for Digia Pulssi Developers)
 
-First build the package creation containers:
+Run the release script in the repository root directory:
 
-docker build -t zabbix-rpm:centos5 -f Dockerfile.centos5 .
-docker build -t zabbix-rpm:centos6 -f Dockerfile.centos6 .
-docker build -t zabbix-rpm:centos7 -f Dockerfile.centos7 .
+```
+./release.sh
+```
 
-Then run the following commands to produce new installation packages for different platforms:
-
-docker run --rm -v $(pwd)/RPMS:/usr/src/redhat/RPMS zabbix-rpm:centos5
-docker run --rm -v $(pwd)/RPMS:/root/rpmbuild/RPMS zabbix-rpm:centos6
-docker run --rm -v $(pwd)/RPMS:/root/rpmbuild/RPMS zabbix-rpm:centos7
-
-Finally, copy the zabbix-agent rpm packages from RPMS folder to Github releases section.
-
-- Note that CentOS 5 package name must be modified to include "el5" tag similarly to the others
-- Remove "centos" from CentOS 7 package name
+After building the release, create a new release in Github and upload the packages there.
 
 # Implementation Notes
 
 The packaging has been adapted from the instructions at http://zabbix.org/wiki/Docs/howto/rebuild_rpms
+
+# Versioning Practices
+
+PULSSI_RELEASE_VERSION environment variable defines Digia Pulssi subversion number in case we want to release
+multiple versions of a single Zabbix Agent version&release.
+
+- When releasing a newer Zabbix Agent base version: Update ZABBIX_VERSION and set PULSSI_RELEASE_VERSION to 0
+- When releasing a newer Digia Pulssi specific Zabbix Agent version using the same Zabbix Agent version than before: Increase PULSSI_RELEASE_VERSION by 1
+
+Version numbers are defined in Dockerfile.* files.

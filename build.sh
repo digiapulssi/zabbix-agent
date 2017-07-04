@@ -1,15 +1,18 @@
 #/bin/bash
 set -e
 
+# Run this command only inside docker container with proper environment variables set
+# (see usage in Dockerfile.* files)
+
 # Get the SRPM containing Zabbix Official RPM packaging sources
 wget -nv "$URL_ZABBIX_SRPM"
 rpm -ih zabbix-*.src.rpm
 
 # Get latest sources from Pulssi repository, including Pulssi changes
-wget -nv https://github.com/digiapulssi/zabbix/tarball/branch-3.2.3
-mkdir zabbix-3.2.3
-tar zxf branch-3.2.3 -C zabbix-3.2.3 --strip 1
-pushd zabbix-3.2.3
+wget -nv https://github.com/digiapulssi/zabbix/tarball/branch-$ZABBIX_VERSION
+mkdir zabbix-$ZABBIX_VERSION
+tar zxf branch-$ZABBIX_VERSION -C zabbix-$ZABBIX_VERSION --strip 1
+pushd zabbix-$ZABBIX_VERSION
 
 # Default configuration changes
 # Do not specify Hostname but use system hostname by default
@@ -19,10 +22,8 @@ sed -i '/^# Timeout=3/a Timeout=15' conf/zabbix_agentd.conf
 
 # Compile tarball so that it's identical to the one included in official SPRM
 # See: https://www.zabbix.org/wiki/Compilation_instructions
-#sed -i 's/3\.2\.3/3.2.3.digiapulssi/g' configure.ac
 
 # file paths are so close to 99 long that adding digiapulssi to version number makes them too long with old tar version
-#sed -i 's/AM_INIT_AUTOMAKE/AM_INIT_AUTOMAKE([1.9 tar-ustar])/g' configure.ac
 ./bootstrap.sh
 ./configure
 make dbschema
@@ -31,8 +32,8 @@ make gettext
 mkdir src/zabbix_java/bin # this is some workaround documented nowhere but necessary for make dist to work...
 make dist
 mkdir -p $RPMBUILD/SOURCES # required for CentOS 5 which doesn't have fedora-packager
-rm $RPMBUILD/SOURCES/zabbix-3.2.3.tar.gz # Original one installed by SRPM
-mv zabbix-3.2.3.tar.gz $RPMBUILD/SOURCES/
+rm $RPMBUILD/SOURCES/zabbix-$ZABBIX_VERSION.tar.gz # Original one installed by SRPM
+mv zabbix-$ZABBIX_VERSION.tar.gz $RPMBUILD/SOURCES/
 popd
 
 # Get Pulssi monitoring scripts
@@ -45,8 +46,12 @@ tar cvf $RPMBUILD/SOURCES/scripts_config.tar.gz .
 popd
 
 # Update SPEC contents
-#sed -i 's/^Version:\s\+3.2.3/Version:        3.2.3.digiapulssi/' $RPMBUILD/SPECS/zabbix.spec
-sed -i 's/^\(Release:\s\+.*\)$/\1.digiapulssi/' $RPMBUILD/SPECS/zabbix.spec
+# Add digiapulssi to the Release number
+#  Before change: Release part (including architcture) is 1.el6
+#  After change: Release part is 1.X.digiapulssi.el6
+#    X ($PULSSI_RELEASE_VERSION) defines Pulssi subversion number in case we want to release
+#                                multiple versions of a single Zabbix Agent version&release
+sed -i 's/^\(Release:\s\+[0-9]\+\)%{?alphatag:\.%{alphatag}}%{?dist}$/\1.'${PULSSI_RELEASE_VERSION}'.digiapulssi%{?dist}/' $RPMBUILD/SPECS/zabbix.spec
 
 ##############################################################33
 # Monitoring scripts under /etc/zabbix/scripts
