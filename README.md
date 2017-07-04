@@ -23,6 +23,7 @@ Install the RPM package with the following command:
 
 ```
 yum localinstall zabbix-agent-VERSION.digiapulssi.elVER.x86_64.rpm
+(for CentOS/RedHat/Oracle Linux 5.x you need to add --nogpgcheck flag)
 ```
 
 After installation, you should configure the following sections in /etc/zabbix/zabbix_agentd.conf file.
@@ -74,6 +75,11 @@ Check for the following lines which indicate connection problems:
 84:20170704:065535.728 active check configuration update from [ZABBIX_SERVER_DEST_ADDRESS:10051] started to fail (cannot connect to [[ZABBIX_SERVER_DEST_ADDRESS]:10051]: [111] Connection refused
 ```
 
+The next line indicates that connection works but the host is not yet configured in Digia Pulssi side:
+```
+64:20170704:071034.703 no active checks on server [ZABBIX_SERVER_DEST_ADDRESS:10051]: host [HOSTNAME] not found
+```
+
 Firewall openings for active checks can be checked with one of the following tools, depending on your system:
 ```
 telnet ZABBIX_SERVER_DEST_ADDRESS 10051
@@ -93,6 +99,13 @@ Install the files to the following locations:
 
 - Script file: /etc/zabbix/scripts
 - Configuration file (something.conf): /etc/zabbix/zabbix-agentd.d/
+
+Modify the file permissions as follows (the owner should be root):
+
+```
+chmod 0755 /etc/zabbix/scripts/SCRIPTNAME
+chmod 0644 /etc/zabbix/zabbix-agentd.d/SCRIPTNAME.conf
+```
 
 # How to Release a New Version (for Digia Pulssi Developers)
 
