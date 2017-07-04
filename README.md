@@ -123,10 +123,17 @@ The packaging has been adapted from the instructions at http://zabbix.org/wiki/D
 
 # Versioning Practices
 
+Environment variables controlling the versions are defined in Dockerfile.* files.
+
 PULSSI_RELEASE_VERSION environment variable defines Digia Pulssi subversion number in case we want to release
 multiple versions of a single Zabbix Agent version&release.
 
-- When releasing a newer Zabbix Agent base version: Update ZABBIX_VERSION and set PULSSI_RELEASE_VERSION to 0
-- When releasing a newer Digia Pulssi specific Zabbix Agent version using the same Zabbix Agent version than before: Increase PULSSI_RELEASE_VERSION by 1
+To release a package based on a newer Zabbix Agent version:
 
-Version numbers are defined in Dockerfile.* files.
+- Update ZABBIX_VERSION
+- Set PULSSI_RELEASE_VERSION to 0
+- Update URL_ZABIX_SRPM
+
+To release a newer Digia Pulssi specific Zabbix Agent version using the same Zabbix Agent version than before:
+
+- Increase PULSSI_RELEASE_VERSION by 1
