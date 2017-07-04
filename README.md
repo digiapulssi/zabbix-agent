@@ -132,7 +132,7 @@ To release a package based on a newer Zabbix Agent version:
 
 - Update ZABBIX_VERSION
 - Set PULSSI_RELEASE_VERSION to 0
-- Update URL_ZABIX_SRPM
+- Update URL_ZABBIX_SRPM
 
 To release a newer Digia Pulssi specific Zabbix Agent version using the same Zabbix Agent version than before:
 
