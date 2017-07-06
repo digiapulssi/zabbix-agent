@@ -107,6 +107,9 @@ chmod 0755 /etc/zabbix/scripts/SCRIPTNAME
 chmod 0644 /etc/zabbix/zabbix-agentd.d/SCRIPTNAME.conf
 ```
 
+NOTE! Do not leave any backup files etc. under /etc/zabbix/zabbix-agend.d/ because
+all the files in the directory are considered as actual configuration files and loaded by Zabbix Agent.
+
 # How to Release a New Version (for Digia Pulssi Developers)
 
 Run the release script in the repository root directory:
