@@ -19,7 +19,7 @@ Download the latest installation packages from https://github.com/digiapulssi/za
 
 # Installation and Configuration
 
-Install the RPM package with the following command:
+Install the downloaded RPM package with the following command:
 
 ```
 yum localinstall zabbix-agent-VERSION.digiapulssi.DISTRIBUTION.x86_64.rpm
