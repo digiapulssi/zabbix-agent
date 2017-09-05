@@ -19,6 +19,10 @@ Download the latest installation packages from https://github.com/digiapulssi/za
 
 # Installation and Configuration
 
+Install the downloaded DEB package with the following command:
+
+gdebi 
+
 Install the downloaded RPM package with the following command:
 
 ```

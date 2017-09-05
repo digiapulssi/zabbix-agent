@@ -1,0 +1,22 @@
+FROM debian:7
+
+# Zabbix agent build prerequisites
+RUN apt-get update && apt-get install -y build-essential devscripts quilt
+RUN apt-get install -y git autoconf autoconf automake wget unzip gcc pkg-config
+
+# Required for Zabbix tarball compiling
+RUN apt-get install -y ruby rubygems
+RUN gem install sass --version '=3.4.22'
+
+# Required by packaging that builds Zabbix server and proxy in addition to the agent
+RUN apt-get install -y libsnmp-dev libmysqlclient-dev libpq-dev libsqlite3-dev libcurl4-openssl-dev libldap2-dev libiksemel-dev libopenipmi-dev libssh2-1-dev unixodbc-dev openjdk-7-jdk libxml2-dev
+#RUN apt-get install -y libmysqlclient-dev postgresql-dev libsnmp5-dev openldap-devel gnutls-devel sqlite-devel unixODBC-devel curl-devel OpenIPMI-devel java-devel libxml2-devel openssl-devel iksemel-devel libssh2-devel gettext
+
+# Build script
+WORKDIR /build
+COPY build-debian.sh /build-debian.sh
+RUN chmod a+x /build-debian.sh
+CMD ["/bin/bash", "/build-debian.sh"]
+ENV ZABBIX_VERSION=3.2.3
+ENV PULSSI_RELEASE_VERSION=0
+ENV URL_ZABBIX_DSC http://repo.zabbix.com/zabbix/3.2/debian/pool/main/z/zabbix/zabbix_3.2.3-1+wheezy.dsc
