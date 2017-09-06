@@ -41,7 +41,9 @@ chkconfig zabbix-agent on
 
 Install the downloaded DEB package with the following command:
 
+```
 gdebi zabbix-agent_VERSION.digiapulssi.DISTRIBUTION-1_amd64.deb
+```
 
 Make the configuration changes (see below), and restart the agent:
 
