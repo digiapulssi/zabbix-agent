@@ -79,7 +79,7 @@ for confpath in config/*; do
 done
 
 # Add our packaging modifications in
-dpkg-source --commit . digiapulssi-packaging-changes
+EDITOR=/bin/true dpkg-source --commit . digiapulssi-packaging-changes
 
 # Compile sources and make debian package
 debuild -us -uc
