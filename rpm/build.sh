@@ -9,9 +9,9 @@ wget -nv "$URL_ZABBIX_SRPM"
 rpm -ih zabbix-*.src.rpm
 
 # Get latest sources from Pulssi repository, including Pulssi changes
-wget -nv https://github.com/digiapulssi/zabbix/tarball/branch-$ZABBIX_VERSION
+wget -nv https://github.com/digiapulssi/zabbix/tarball/$ZABBIX_BRANCH
 mkdir zabbix-$ZABBIX_VERSION
-tar zxf branch-$ZABBIX_VERSION -C zabbix-$ZABBIX_VERSION --strip 1
+tar zxf $ZABBIX_BRANCH -C zabbix-$ZABBIX_VERSION --strip 1
 pushd zabbix-$ZABBIX_VERSION
 
 # Default configuration changes
