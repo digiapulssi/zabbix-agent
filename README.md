@@ -3,7 +3,7 @@
 Build Digia Pulssi specific Zabbix Agent installation packages. The changes introduced by Pulssi are as follows:
 
 - Use a forked Zabbix agent at https://github.com/digiapulssi/zabbix. The changes in the forked version
-  enable new configuration features that allow better control at the monitored host as to the files and
+  enable new security features that allow better control at the monitored host as to the files and
   logs monitored
 - Bundle monitoring scripts at https://github.com/digiapulssi/zabbix-monitoring-scripts
 - Default configuration does not define hostname but takes it from system hostname
@@ -16,12 +16,12 @@ Download the latest installation packages from https://github.com/digiapulssi/za
 - CentOS / RedHat / Oracle Linux 5.x: zabbix-agent-VERSION.digiapulssi.el5.x86_64.rpm
 - CentOS / RedHat / Oracle Linux 6.x: zabbix-agent-VERSION.digiapulssi.el6.x86_64.rpm
 - CentOS / RedHat / Oracle Linux 7.x: zabbix-agent-VERSION.digiapulssi.el7.x86_64.rpm
+- Debian 7 (Wheezy): zabbix-agent_VERSION.digiapulssi.wheezy-1_amd64.deb
+- Debian 8 (Jessie): zabbix-agent_VERSION.digiapulssi.jessie-1_amd64.deb
 
 # Installation and Configuration
 
-Install the downloaded DEB package with the following command:
-
-gdebi 
+### CentOS / RedHat / Oracle Linux
 
 Install the downloaded RPM package with the following command:
 
@@ -29,6 +29,27 @@ Install the downloaded RPM package with the following command:
 yum localinstall zabbix-agent-VERSION.digiapulssi.DISTRIBUTION.x86_64.rpm
 (for CentOS/RedHat/Oracle Linux 5.x you need to add --nogpgcheck flag)
 ```
+
+Make the configuration changes (see below), start the agent and configure it to auto-start on boot:
+
+```
+service zabbix-agent start
+chkconfig zabbix-agent on
+```
+
+### Debian
+
+Install the downloaded DEB package with the following command:
+
+gdebi zabbix-agent_VERSION.digiapulssi.DISTRIBUTION-1_amd64.deb
+
+Make the configuration changes (see below), and restart the agent:
+
+```
+service zabbix-agent restart
+```
+
+### Configuration
 
 After installation, you should configure the following sections in /etc/zabbix/zabbix_agentd.conf file.
 Find the current configuration lines and replace them as follows:
@@ -51,12 +72,6 @@ AllowedPath=PATH_TO_FILE2
 
 To allow monitoring of all files under /var/log/example/:
 AllowedPath=/var/log/example/.*
-```
-
-After configuration, you can start the agent and configure it to auto-start on boot:
-```
-service zabbix-agent start
-chkconfig zabbix-agent on
 ```
 
 # Upgade over Existing Zabbix Agent Installation
