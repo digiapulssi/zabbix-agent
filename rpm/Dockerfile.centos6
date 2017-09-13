@@ -18,6 +18,7 @@ COPY build.sh /build.sh
 RUN chmod a+x /build.sh
 CMD /build.sh
 ENV ZABBIX_VERSION=3.2.3
+ENV ZABBIX_BRANCH=branch-$ZABBIX_VERSION
 ENV PULSSI_RELEASE_VERSION=0
 ENV URL_ZABBIX_SRPM http://repo.zabbix.com/zabbix/3.2/rhel/6/SRPMS/zabbix-3.2.3-1.el6.src.rpm
 ENV RPMBUILD=/root/rpmbuild
