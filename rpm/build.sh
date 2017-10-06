@@ -37,11 +37,13 @@ mv zabbix-$ZABBIX_VERSION.tar.gz $RPMBUILD/SOURCES/
 popd
 
 # Get Pulssi monitoring scripts
+mkdir -p /tmp/zabbix-monitoring-scripts
+pushd /tmp/zabbix-monitoring-scripts
 wget https://github.com/digiapulssi/zabbix-monitoring-scripts/tarball/master
-tar -zxvf master */scripts --strip 1
-tar -zxvf master */config --strip 1
+tar -zxvf master */etc/zabbix/scripts --strip 3
+tar -zxvf master */etc/zabbix/zabbix_agentd.d --strip 3
 tar cvf $RPMBUILD/SOURCES/scripts.tar.gz scripts
-pushd config
+cd zabbix_agentd.d
 tar cvf $RPMBUILD/SOURCES/scripts_config.tar.gz .
 popd
 

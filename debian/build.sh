@@ -50,10 +50,13 @@ sed -i '/^Hostname=Zabbix server/d' conf/zabbix_agentd.conf
 sed -i '/^# Timeout=3/a Timeout=15' conf/zabbix_agentd.conf
 
 # Get Pulssi monitoring scripts
+mkdir zabbix-monitoring-scripts
+pushd zabbix-monitoring-scripts
 wget https://github.com/digiapulssi/zabbix-monitoring-scripts/tarball/master
-tar --wildcards -zxvf master */scripts --strip 1
-tar --wildcards -zxvf master */config --strip 1
+tar --wildcards -zxvf master */etc/zabbix/scripts --strip 3
+tar --wildcards -zxvf master */etc/zabbix/zabbix_agentd.d --strip 3
 rm -f master
+popd
 
 ##############################################################33
 # Monitoring scripts under /etc/zabbix/scripts
@@ -61,9 +64,9 @@ rm -f master
 echo "etc/zabbix/scripts" >> debian/zabbix-agent.dirs
 
 # Add each script file individually to files section
-for scriptpath in scripts/*; do
+for scriptpath in zabbix-monitoring-scripts/scripts/*; do
    scriptfile=$(basename $scriptpath)
-   echo "scripts/$scriptfile etc/zabbix/scripts" >> debian/zabbix-agent.install
+   echo "zabbix-monitoring-scripts/scripts/$scriptfile etc/zabbix/scripts" >> debian/zabbix-agent.install
 done
 
 # Executable rights in post-install script
@@ -73,9 +76,9 @@ sed -i -e '/configure/a \    chmod 755 /etc/zabbix/scripts/*' debian/zabbix-agen
 # Monitoring script configuration files under /etc/zabbix/zabbix_agentd.d
 
 # Add each configuration file individually to files section
-for confpath in config/*; do
+for confpath in zabbix-monitoring-scripts/zabbix_agentd.d/*; do
    conffile=$(basename $confpath)
-   echo "config/$conffile etc/zabbix/zabbix_agentd.d" >> debian/zabbix-agent.install
+   echo "zabbix-monitoring-scripts/zabbix_agentd.d/$conffile etc/zabbix/zabbix_agentd.d" >> debian/zabbix-agent.install
 done
 
 # Add our packaging modifications in

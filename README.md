@@ -133,10 +133,12 @@ all the files in the directory are considered as actual configuration files and 
 
 # How to Release a New Version (for Digia Pulssi Developers)
 
-Run the release script in the repository root directory:
+Update PULSSI_RELEASE_VERSION in Dockerfile files (see below).
+
+Run the build script in the repository root directory:
 
 ```
-./release.sh
+./build-all.sh
 ```
 
 After building the release, create a new release in Github and upload the packages there.
