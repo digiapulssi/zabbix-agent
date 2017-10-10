@@ -13,11 +13,11 @@ Build Digia Pulssi specific Zabbix Agent installation packages. The changes intr
 
 Download the latest installation packages from https://github.com/digiapulssi/zabbix-agent/releases/latest
 
-- CentOS / RedHat / Oracle Linux 5.x: zabbix-agent-VERSION.digiapulssi.el5.x86_64.rpm
-- CentOS / RedHat / Oracle Linux 6.x: zabbix-agent-VERSION.digiapulssi.el6.x86_64.rpm
-- CentOS / RedHat / Oracle Linux 7.x: zabbix-agent-VERSION.digiapulssi.el7.x86_64.rpm
-- Debian 7 (Wheezy): zabbix-agent_VERSION.digiapulssi.wheezy-1_amd64.deb
-- Debian 8 (Jessie): zabbix-agent_VERSION.digiapulssi.jessie-1_amd64.deb
+- CentOS / RedHat / Oracle Linux 5.x: zabbix-agent-pulssi-VERSION.el5.x86_64.rpm
+- CentOS / RedHat / Oracle Linux 6.x: zabbix-agent-pulssi-VERSION.el6.x86_64.rpm
+- CentOS / RedHat / Oracle Linux 7.x: zabbix-agent-pulssi-VERSION.el7.x86_64.rpm
+- Debian 7 (Wheezy): zabbix-agent-pulssi_VERSION.wheezy-1_amd64.deb
+- Debian 8 (Jessie): zabbix-agent-pulssi_VERSION.jessie-1_amd64.deb
 
 # Installation and Configuration
 
@@ -26,7 +26,7 @@ Download the latest installation packages from https://github.com/digiapulssi/za
 Install the downloaded RPM package with the following command:
 
 ```
-yum localinstall zabbix-agent-VERSION.digiapulssi.DISTRIBUTION.x86_64.rpm
+yum localinstall zabbix-agent-pulssi-VERSION.DISTRIBUTION.x86_64.rpm
 (for CentOS/RedHat/Oracle Linux 5.x you need to add --nogpgcheck flag)
 ```
 
@@ -42,7 +42,7 @@ chkconfig zabbix-agent on
 Install the downloaded DEB package with the following command:
 
 ```
-gdebi zabbix-agent_VERSION.digiapulssi.DISTRIBUTION-1_amd64.deb
+gdebi zabbix-agent-pulssi_VERSION.DISTRIBUTION-1_amd64.deb
 ```
 
 Make the configuration changes (see below), and restart the agent:
