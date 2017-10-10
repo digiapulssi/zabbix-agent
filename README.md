@@ -151,8 +151,8 @@ The packaging has been adapted from the instructions at http://zabbix.org/wiki/D
 
 Environment variables controlling the versions are defined in Dockerfile.* files.
 
-PULSSI_RELEASE_VERSION environment variable defines Digia Pulssi subversion number in case we want to release
-multiple versions of a single Zabbix Agent version&release.
+PULSSI_RELEASE_VERSION environment variable defines Digia Pulssi release/build number
+eg. 3.2.3-PULSSI_RELEASE_VERSION.
 
 To release a package based on a newer Zabbix Agent version:
 

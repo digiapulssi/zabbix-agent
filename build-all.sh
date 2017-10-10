@@ -17,10 +17,10 @@ docker run --rm -v $(pwd)/RPMS:/root/rpmbuild/RPMS zabbix-rpm:centos6
 docker run --rm -v $(pwd)/RPMS:/root/rpmbuild/RPMS zabbix-rpm:centos7
 
 # Modify CentOS 5 package name to include "el5" tag similarly to the others
-sudo rename 's/zabbix-agent-([0-9.-]+)\.digiapulssi\.x86_64\.rpm/zabbix-agent-$1.digiapulssi.el5.x86_64.rpm/' RPMS/x86_64/*.rpm
+sudo rename 's/zabbix-agent-pulssi-([0-9.-]+)\.x86_64\.rpm/zabbix-agent-pulssi-$1.el5.x86_64.rpm/' RPMS/x86_64/*.rpm
 
 # Remove "centos" from CentOS 7 package name
-sudo rename 's/zabbix-agent-([0-9.-]+)\.digiapulssi\.el7\.centos\.x86_64\.rpm/zabbix-agent-$1.digiapulssi.el7.x86_64.rpm/' RPMS/x86_64/*.rpm
+sudo rename 's/zabbix-agent-pulssi-([0-9.-]+)\.el7\.centos\.x86_64\.rpm/zabbix-agent-pulssi-$1.el7.x86_64.rpm/' RPMS/x86_64/*.rpm
 
 popd
 
