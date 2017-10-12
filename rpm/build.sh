@@ -37,21 +37,32 @@ mv zabbix-$ZABBIX_VERSION.tar.gz $RPMBUILD/SOURCES/
 popd
 
 # Get Pulssi monitoring scripts
+mkdir -p /tmp/zabbix-monitoring-scripts
+pushd /tmp/zabbix-monitoring-scripts
 wget https://github.com/digiapulssi/zabbix-monitoring-scripts/tarball/master
-tar -zxvf master */scripts --strip 1
-tar -zxvf master */config --strip 1
+tar -zxvf master */etc/zabbix/scripts --strip 3
+tar -zxvf master */etc/zabbix/zabbix_agentd.d --strip 3
 tar cvf $RPMBUILD/SOURCES/scripts.tar.gz scripts
-pushd config
+cd zabbix_agentd.d
 tar cvf $RPMBUILD/SOURCES/scripts_config.tar.gz .
 popd
 
-# Update SPEC contents
-# Add digiapulssi to the Release number
-#  Before change: Release part (including architcture) is 1.el6
-#  After change: Release part is 1.X.digiapulssi.el6
-#    X ($PULSSI_RELEASE_VERSION) defines Pulssi subversion number in case we want to release
-#                                multiple versions of a single Zabbix Agent version&release
-sed -i 's/^\(Release:\s\+[0-9]\+\)%{?alphatag:\.%{alphatag}}%{?dist}$/\1.'${PULSSI_RELEASE_VERSION}'.digiapulssi%{?dist}/' $RPMBUILD/SPECS/zabbix.spec
+
+##############################################################33
+# Update package name and version to SPEC
+
+# Change name from zabbix-agent to zabbix-agent-pulssi
+sed -i 's/^%package agent$/%package agent-pulssi/' $RPMBUILD/SPECS/zabbix.spec
+# TBD ADD for Digia Pulssi to description
+sed -i 's/^%description agent$/%description agent-pulssi/' $RPMBUILD/SPECS/zabbix.spec
+sed -i 's/^%pre agent$/%pre agent-pulssi/' $RPMBUILD/SPECS/zabbix.spec
+sed -i 's/^%post agent$/%post agent-pulssi/' $RPMBUILD/SPECS/zabbix.spec
+sed -i 's/^%preun agent$/%preun agent-pulssi/' $RPMBUILD/SPECS/zabbix.spec
+sed -i 's/^%postun agent$/%postun agent-pulssi/' $RPMBUILD/SPECS/zabbix.spec
+sed -i 's/^%files agent$/%files agent-pulssi/' $RPMBUILD/SPECS/zabbix.spec
+
+# Change release/build number (3.2.3-X where X is build number)
+sed -i 's/^\(Release:\s\+\)[0-9]\+%/\1'${PULSSI_RELEASE_VERSION}'%/' $RPMBUILD/SPECS/zabbix.spec
 
 ##############################################################33
 # Monitoring scripts under /etc/zabbix/scripts
