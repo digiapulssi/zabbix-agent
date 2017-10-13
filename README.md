@@ -13,11 +13,11 @@ Build Digia Pulssi specific Zabbix Agent installation packages. The changes intr
 
 Download the latest installation packages from https://github.com/digiapulssi/zabbix-agent/releases/latest
 
-- CentOS / RedHat / Oracle Linux 5.x: zabbix-agent-VERSION.digiapulssi.el5.x86_64.rpm
-- CentOS / RedHat / Oracle Linux 6.x: zabbix-agent-VERSION.digiapulssi.el6.x86_64.rpm
-- CentOS / RedHat / Oracle Linux 7.x: zabbix-agent-VERSION.digiapulssi.el7.x86_64.rpm
-- Debian 7 (Wheezy): zabbix-agent_VERSION.digiapulssi.wheezy-1_amd64.deb
-- Debian 8 (Jessie): zabbix-agent_VERSION.digiapulssi.jessie-1_amd64.deb
+- CentOS / RedHat / Oracle Linux 5.x: zabbix-agent-pulssi-VERSION.el5.x86_64.rpm
+- CentOS / RedHat / Oracle Linux 6.x: zabbix-agent-pulssi-VERSION.el6.x86_64.rpm
+- CentOS / RedHat / Oracle Linux 7.x: zabbix-agent-pulssi-VERSION.el7.x86_64.rpm
+- Debian 7 (Wheezy): zabbix-agent-pulssi_VERSION.wheezy-1_amd64.deb
+- Debian 8 (Jessie): zabbix-agent-pulssi_VERSION.jessie-1_amd64.deb
 
 # Installation and Configuration
 
@@ -36,7 +36,7 @@ apt-get purge zabbix-agent (Debian)
 Install the downloaded RPM package with the following command:
 
 ```
-yum localinstall zabbix-agent-VERSION.digiapulssi.DISTRIBUTION.x86_64.rpm
+yum localinstall zabbix-agent-pulssi-VERSION.DISTRIBUTION.x86_64.rpm
 (for CentOS/RedHat/Oracle Linux 5.x you need to add --nogpgcheck flag)
 ```
 
@@ -144,10 +144,12 @@ all the files in the directory are considered as actual configuration files and 
 
 # How to Release a New Version (for Digia Pulssi Developers)
 
-Run the release script in the repository root directory:
+Update PULSSI_RELEASE_VERSION in Dockerfile files (see below).
+
+Run the build script in the repository root directory:
 
 ```
-./release.sh
+./build-all.sh
 ```
 
 After building the release, create a new release in Github and upload the packages there.
@@ -160,8 +162,8 @@ The packaging has been adapted from the instructions at http://zabbix.org/wiki/D
 
 Environment variables controlling the versions are defined in Dockerfile.* files.
 
-PULSSI_RELEASE_VERSION environment variable defines Digia Pulssi subversion number in case we want to release
-multiple versions of a single Zabbix Agent version&release.
+PULSSI_RELEASE_VERSION environment variable defines Digia Pulssi release/build number
+eg. 3.2.3-PULSSI_RELEASE_VERSION.
 
 To release a package based on a newer Zabbix Agent version:
 
