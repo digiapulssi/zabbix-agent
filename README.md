@@ -21,7 +21,17 @@ Download the latest installation packages from https://github.com/digiapulssi/za
 
 # Installation and Configuration
 
-### CentOS / RedHat / Oracle Linux
+### Install over Existing Zabbix Agent Installation
+
+In case you already have the official Zabbix Agent installed on your system,
+you should uninstall it before installing digiapulssi version.
+
+```
+yum erase zabbix-agent (CentOS / RedHat / Orace Linux)
+apt-get purge zabbix-agent (Debian)
+```
+
+### Installation on CentOS / RedHat / Oracle Linux
 
 Install the downloaded RPM package with the following command:
 
@@ -37,18 +47,30 @@ service zabbix-agent start
 chkconfig zabbix-agent on
 ```
 
-### Debian
+### Installation on Debian
 
-Install the downloaded DEB package with the following command:
+Install the downloaded DEB package either with `dpkg -i` or `gdebi` command:
+
+Alternative 1: Use `dpkg -i` and install dependencies manually:
+```
+dpkg -i zabbix-agent-pulssi_VERSION.DISTRIBUTION-1_amd64.deb
+(the command shows missing dependencies as `Package nnn not installed`)
+apt-get install --fix-broken
+(this will install the missing dependencies and finish zabbix-agent-pulssi package installation)
+```
+
+Alternative 2: Use `gdebi` that installs dependencies automatically:
 
 ```
-gdebi zabbix-agent_VERSION.digiapulssi.DISTRIBUTION-1_amd64.deb
+apt-get update
+apt-get install gdebi
+gdebi zabbix-agent-pulssi_VERSION.DISTRIBUTION-1_amd64.deb
 ```
 
 Make the configuration changes (see below), and restart the agent:
 
 ```
-service zabbix-agent restart
+service zabbix-agent-pulssi restart
 ```
 
 ### Configuration
@@ -74,17 +96,6 @@ AllowedPath=PATH_TO_FILE2
 
 To allow monitoring of all files under /var/log/example/:
 AllowedPath=/var/log/example/.*
-```
-
-# Upgade over Existing Zabbix Agent Installation
-
-In case you already have the official Zabbix Agent installed on your system,
-you should uninstall it before installing digiapulssi version (in order to
-get the latest configuration files that will not be installed if there
-is an existing version in the system).
-
-```
-yum erase zabbix-agent
 ```
 
 # Troubleshooting
