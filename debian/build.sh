@@ -51,6 +51,10 @@ sed -i 's/^Package: zabbix-agent$/Package: zabbix-agent-pulssi/' debian/control
 sed -i 's/dh_installinit -p zabbix-agent/dh_installinit -p zabbix-agent-pulssi/' debian/rules
 rename 's/zabbix-agent\.(.*)$/zabbix-agent-pulssi.$1/' debian/zabbix-agent.*
 
+# jq as dependency because it's required by docker monitoring script and
+# usually by other monitoring scripts too
+sed -i 's/^\(Depends: \${shlibs:Depends}, \${misc:Depends}, adduser, lsb-base\)$/\1, jq/' debian/control
+
 # Default configuration changes
 # Do not specify Hostname but use system hostname by default
 sed -i '/^Hostname=Zabbix server/d' conf/zabbix_agentd.conf
