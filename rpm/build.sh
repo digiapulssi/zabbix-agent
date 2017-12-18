@@ -53,7 +53,6 @@ popd
 
 # Change name from zabbix-agent to zabbix-agent-pulssi
 sed -i 's/^%package agent$/%package agent-pulssi/' $RPMBUILD/SPECS/zabbix.spec
-# TBD ADD for Digia Pulssi to description
 sed -i 's/^%description agent$/%description agent-pulssi/' $RPMBUILD/SPECS/zabbix.spec
 sed -i 's/^%pre agent$/%pre agent-pulssi/' $RPMBUILD/SPECS/zabbix.spec
 sed -i 's/^%post agent$/%post agent-pulssi/' $RPMBUILD/SPECS/zabbix.spec
@@ -63,6 +62,10 @@ sed -i 's/^%files agent$/%files agent-pulssi/' $RPMBUILD/SPECS/zabbix.spec
 
 # Change release/build number (3.2.3-X where X is build number)
 sed -i 's/^\(Release:\s\+\)[0-9]\+%/\1'${PULSSI_RELEASE_VERSION}'%/' $RPMBUILD/SPECS/zabbix.spec
+
+# jq as dependency because it's required by docker monitoring script and
+# usually by other monitoring scripts too
+sed -i '/^Requires:\s\+logrotate/a Requires:       jq' $RPMBUILD/SPECS/zabbix.spec
 
 ##############################################################33
 # Monitoring scripts under /etc/zabbix/scripts

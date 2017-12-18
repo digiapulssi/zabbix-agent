@@ -11,12 +11,15 @@ RUN gem install sass --version '=3.4.22'
 # Required by packaging that builds Zabbix server and proxy in addition to the agent
 RUN apt-get install -y libsnmp-dev libmysqlclient-dev libpq-dev libsqlite3-dev libcurl4-openssl-dev libldap2-dev libiksemel-dev libopenipmi-dev libssh2-1-dev unixodbc-dev openjdk-7-jdk libxml2-dev
 
+# Additional dependencies by Zabbix version 3.4
+RUN apt-get install -y libpcre++-dev libevent-dev
+
 # Build script
 WORKDIR /build
 COPY build.sh /build.sh
 RUN chmod a+x /build.sh
 CMD ["/bin/bash", "/build.sh"]
-ENV ZABBIX_VERSION=3.2.3
-ENV ZABBIX_BRANCH=branch-$ZABBIX_VERSION
-ENV PULSSI_RELEASE_VERSION=1
-ENV URL_ZABBIX_DSC http://repo.zabbix.com/zabbix/3.2/debian/pool/main/z/zabbix/zabbix_3.2.3-1+jessie.dsc
+ENV ZABBIX_VERSION=3.4.4
+ENV ZABBIX_BRANCH=pulssi-$ZABBIX_VERSION
+ENV PULSSI_RELEASE_VERSION=0
+ENV URL_ZABBIX_DSC http://repo.zabbix.com/zabbix/3.4/debian/pool/main/z/zabbix/zabbix_3.4.4-4+jessie.dsc
