@@ -91,11 +91,15 @@ not contain sensitive (ST III) information.
 
 ```
 (Under ADVANCED CONTROL OVER FILES)
-AllowedPath=PATH_TO_FILE1
-AllowedPath=PATH_TO_FILE2
+AllowedPath=REGEXP_PATH_TO_FILE1
+AllowedPath=REGEXP_PATH_TO_FILE2
+AllowedPath=ITEMTYPE,REGEXP_PATH_TO_FILE3 (supported from version 3.4.4-0 version onwards)
 
 To allow monitoring of all files under /var/log/example/:
-AllowedPath=/var/log/example/.*
+AllowedPath=^/var/log/example/.*$
+
+To allow only log.count monitoring item for files under /var/log/example2/:
+AllowedPath=log.count,^/var/log/example2/.*$
 ```
 
 # Troubleshooting
