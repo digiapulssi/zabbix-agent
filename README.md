@@ -93,7 +93,7 @@ not contain sensitive (ST III) information.
 (Under ADVANCED CONTROL OVER FILES)
 AllowedPath=REGEXP_PATH_TO_FILE1
 AllowedPath=REGEXP_PATH_TO_FILE2
-AllowedPath=ITEMTYPE,REGEXP_PATH_TO_FILE3 (supported from version 3.4.4-0 version onwards)
+AllowedPath=ITEMTYPE,REGEXP_PATH_TO_FILE3 (supported from version 3.4.4-0 onwards)
 
 To allow monitoring of all files under /var/log/example/:
 AllowedPath=^/var/log/example/.*$
