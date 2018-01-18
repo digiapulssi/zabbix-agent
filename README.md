@@ -67,6 +67,25 @@ apt-get install gdebi
 gdebi zabbix-agent-pulssi_VERSION.DISTRIBUTION-1_amd64.deb
 ```
 
+*Note with Ubuntu Trusty (14.04)*
+
+Zabbix Agent version 3.4.4 (or later) requires libpcre3 version 8.35 as its dependency.
+Ubuntu Trusty however has only version 8.31 available by default.
+To install Zabbix Agent on Ubuntu Trusty you need to first install libpcre3 version 8.35 manually.
+
+* Pick up the correct architecture and mirror at https://packages.debian.org/jessie/libpcre3
+* Download the installation package and install it using dpkg or gdebi
+
+```
+(required only for Ubuntu Trusty)
+# amd64 architecture selected as an example
+curl -OJ http://ftp.fi.debian.org/debian/pool/main/p/pcre3/libpcre3_8.35-3.3+deb8u4_amd64.deb
+dpkg -i libpcre3_8.35-3.3+deb8u4_amd64.deb
+
+# Verify libpcre3 version number (should show 8.35)
+dpkg -s libpcre3
+```
+
 Make the configuration changes (see below), and restart the agent:
 
 ```
