@@ -43,7 +43,7 @@ echo "$UUPDATE_OUT"
 
 # uupdate tells the new directory name in its standard output
 #    Do a "cd ../zabbix-3.2.3-1+wheezy" to see the new package
-NEW_DIR=$(echo "$UUPDATE_OUT" | sed -n 's/Do a "cd \(.*\)" to see the new package/\1/p')
+NEW_DIR=$(echo "$UUPDATE_OUT" | sed -n 's/.*Do a "cd \(.*\)" to see the new package/\1/p')
 cd "$NEW_DIR"
 
 # Change zabbix-agent package name to zabbix-agent-pulssi

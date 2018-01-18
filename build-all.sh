@@ -29,11 +29,13 @@ pushd debian
 # First build the package creation containers locally
 docker build -t zabbix-deb:debian7 -f Dockerfile.debian7 .
 docker build -t zabbix-deb:debian8 -f Dockerfile.debian8 .
+docker build -t zabbix-deb:debian9 -f Dockerfile.debian9 .
 docker build -t zabbix-deb:debian8docker -f Dockerfile.debian8.docker-host-monitoring .
 
 # Then run the following commands to produce new installation packages for different platforms
 docker run --rm -v $(pwd)/DEB:/DEB zabbix-deb:debian7
 docker run --rm -v $(pwd)/DEB:/DEB zabbix-deb:debian8
+docker run --rm -v $(pwd)/DEB:/DEB zabbix-deb:debian9
 docker run --rm -v $(pwd)/DEB:/DEB zabbix-deb:debian8docker
 
 popd
