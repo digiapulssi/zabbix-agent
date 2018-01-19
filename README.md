@@ -18,6 +18,7 @@ Download the latest installation packages from https://github.com/digiapulssi/za
 - CentOS / RedHat / Oracle Linux 7.x: zabbix-agent-pulssi-VERSION.el7.x86_64.rpm
 - Debian 7 (Wheezy): zabbix-agent-pulssi_VERSION.wheezy-1_amd64.deb
 - Debian 8 (Jessie): zabbix-agent-pulssi_VERSION.jessie-1_amd64.deb
+- Debian 9 (Stretch): zabbix-agent-pulssi_VERSION.stretch-1_amd64.deb
 
 # Installation and Configuration
 
