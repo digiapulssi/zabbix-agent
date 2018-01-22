@@ -46,6 +46,6 @@ RUN chmod a+x /build.sh
 CMD /build.sh
 ENV ZABBIX_VERSION=3.4.4
 ENV ZABBIX_BRANCH=pulssi-$ZABBIX_VERSION
-ENV PULSSI_RELEASE_VERSION=1
+ENV PULSSI_RELEASE_VERSION=2
 ENV URL_ZABBIX_SRPM http://repo.zabbix.com/zabbix/3.4/rhel/5/SRPMS/zabbix-3.4.4-2.el5.src.rpm
 ENV RPMBUILD=/usr/src/redhat
