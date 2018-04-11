@@ -2,7 +2,7 @@ FROM centos:7
 
 # Zabbix agent build prerequisites
 RUN yum install -y git autoconf autoheader automake wget unzip gcc glibc-static
-RUN wget http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm && rpm -Uvh epel-release*rpm
+RUN yum install -y http://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm
 RUN yum install -y rpm-build fedora-packager
 
 # Required for Zabbix tarball compiling
@@ -22,7 +22,7 @@ RUN chmod a+x /build.sh
 CMD /build.sh
 ENV ZABBIX_VERSION=3.4.4
 ENV ZABBIX_BRANCH=pulssi-$ZABBIX_VERSION
-ENV PULSSI_RELEASE_VERSION=2
+ENV PULSSI_RELEASE_VERSION=3
 ENV URL_ZABBIX_SRPM http://repo.zabbix.com/zabbix/3.4/rhel/7/SRPMS/zabbix-3.4.4-2.el7.src.rpm
 ENV RPMBUILD=/root/rpmbuild
-
+ENV JQ_DEPENDENCY=true

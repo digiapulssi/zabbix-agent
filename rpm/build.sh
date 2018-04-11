@@ -1,5 +1,5 @@
 #/bin/bash
-set -e
+set -ex
 
 # Run this command only inside docker container with proper environment variables set
 # (see usage in Dockerfile.* files)
@@ -9,9 +9,13 @@ wget -nv "$URL_ZABBIX_SRPM"
 rpm -ih zabbix-*.src.rpm
 
 # Get latest sources from Pulssi repository, including Pulssi changes
-wget -nv https://github.com/digiapulssi/zabbix/tarball/$ZABBIX_BRANCH
+
+# CentOS 5 hack: tarball is downloaded by host to temp directory because github required TLS 1.2 which doesn't work in CentOS 5
+if [ ! -f /tmp/$ZABBIX_BRANCH.tar.gz ]; then
+  wget -nv -O /tmp/$ZABBIX_BRANCH.tar.gz https://github.com/digiapulssi/zabbix/tarball/$ZABBIX_BRANCH
+fi
 mkdir zabbix-$ZABBIX_VERSION
-tar zxf $ZABBIX_BRANCH -C zabbix-$ZABBIX_VERSION --strip 1
+tar zxf /tmp/$ZABBIX_BRANCH.tar.gz -C zabbix-$ZABBIX_VERSION --strip 1
 pushd zabbix-$ZABBIX_VERSION
 
 # Default configuration changes
@@ -39,9 +43,13 @@ popd
 # Get Pulssi monitoring scripts
 mkdir -p /tmp/zabbix-monitoring-scripts
 pushd /tmp/zabbix-monitoring-scripts
-wget https://github.com/digiapulssi/zabbix-monitoring-scripts/tarball/master
-tar -zxvf master */etc/zabbix/scripts --strip 3
-tar -zxvf master */etc/zabbix/zabbix_agentd.d --strip 3
+
+# CentOS 5 hack: tarball is downloaded by host to temp directory because github required TLS 1.2 which doesn't work in CentOS 5
+if [ ! -f /tmp/zabbix-monitoring-scripts.tar.gz ]; then
+  wget -O /tmp/zabbix-monitoring-scripts.tar.gz https://github.com/digiapulssi/zabbix-monitoring-scripts/tarball/master
+fi
+tar -zxvf /tmp/zabbix-monitoring-scripts.tar.gz */etc/zabbix/scripts --strip 3
+tar -zxvf /tmp/zabbix-monitoring-scripts.tar.gz */etc/zabbix/zabbix_agentd.d --strip 3
 tar cvf $RPMBUILD/SOURCES/scripts.tar.gz scripts
 cd zabbix_agentd.d
 tar cvf $RPMBUILD/SOURCES/scripts_config.tar.gz .
@@ -65,7 +73,9 @@ sed -i 's/^\(Release:\s\+\)[0-9]\+%/\1'${PULSSI_RELEASE_VERSION}'%/' $RPMBUILD/S
 
 # jq as dependency because it's required by docker monitoring script and
 # usually by other monitoring scripts too
-sed -i '/^Requires:\s\+logrotate/a Requires:       jq' $RPMBUILD/SPECS/zabbix.spec
+if [ "$JQ_DEPENDENCY" == "true" ]; then
+  sed -i '/^Requires:\s\+logrotate/a Requires:       jq' $RPMBUILD/SPECS/zabbix.spec
+fi
 
 ##############################################################33
 # Monitoring scripts under /etc/zabbix/scripts
