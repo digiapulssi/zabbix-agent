@@ -11,8 +11,13 @@ docker build -t zabbix-rpm:centos5 -f Dockerfile.centos5 .
 docker build -t zabbix-rpm:centos6 -f Dockerfile.centos6 .
 docker build -t zabbix-rpm:centos7 -f Dockerfile.centos7 .
 
-# Then run the following commands to produce new installation packages for different platforms
-docker run --rm -v $(pwd)/RPMS:/usr/src/redhat/RPMS zabbix-rpm:centos5
+# Download github packages for CentOS 5 build in host, because github requires TLS 1.2 which is not available
+# from inside CentOS 5 docker container
+wget -nv -O /tmp/pulssi-3.4.4.tar.gz https://github.com/digiapulssi/zabbix/tarball/pulssi-3.4.4
+wget -O /tmp/zabbix-monitoring-scripts.tar.gz https://github.com/digiapulssi/zabbix-monitoring-scripts/tarball/master
+
+# Run the following commands to produce new installation packages for different platforms
+docker run --rm -v $(pwd)/RPMS:/usr/src/redhat/RPMS -v /tmp/pulssi-3.4.4.tar.gz:/tmp/pulssi-3.4.4.tar.gz:ro -v /tmp/zabbix-monitoring-scripts.tar.gz:/tmp/zabbix-monitoring-scripts.tar.gz:ro zabbix-rpm:centos5
 docker run --rm -v $(pwd)/RPMS:/root/rpmbuild/RPMS zabbix-rpm:centos6
 docker run --rm -v $(pwd)/RPMS:/root/rpmbuild/RPMS zabbix-rpm:centos7
 
