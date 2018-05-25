@@ -1,6 +1,19 @@
 #!/bin/bash
 set -e
 
+RENAME=rename
+if [ -f /etc/redhat-release ]; then
+  # We're depending or Perl version of rename that ships by default in Debian-based distros but not in CentOS/Redhat
+  RENAME=/usr/local/bin/rename
+  if [ ! -f $RENAME ]; then
+    sudo yum install perl-CPAN
+    sudo cpan<<EOF
+      install Module::Build
+      install File::Rename
+EOF
+  fi
+fi
+
 pushd rpm
 
 # First clear old packages
@@ -22,10 +35,10 @@ docker run --rm -v $(pwd)/RPMS:/root/rpmbuild/RPMS zabbix-rpm:centos6
 docker run --rm -v $(pwd)/RPMS:/root/rpmbuild/RPMS zabbix-rpm:centos7
 
 # Modify CentOS 5 package name to include "el5" tag similarly to the others
-sudo rename 's/zabbix-agent-pulssi-([0-9.-]+)\.x86_64\.rpm/zabbix-agent-pulssi-$1.el5.x86_64.rpm/' RPMS/x86_64/*.rpm
+sudo $RENAME 's/zabbix-agent-pulssi-([0-9.-]+)\.x86_64\.rpm/zabbix-agent-pulssi-$1.el5.x86_64.rpm/' RPMS/x86_64/*.rpm
 
 # Remove "centos" from CentOS 7 package name
-sudo rename 's/zabbix-agent-pulssi-([0-9.-]+)\.el7\.centos\.x86_64\.rpm/zabbix-agent-pulssi-$1.el7.x86_64.rpm/' RPMS/x86_64/*.rpm
+sudo $RENAME 's/zabbix-agent-pulssi-([0-9.-]+)\.el7\.centos\.x86_64\.rpm/zabbix-agent-pulssi-$1.el7.x86_64.rpm/' RPMS/x86_64/*.rpm
 
 popd
 

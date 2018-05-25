@@ -14,8 +14,8 @@ Build Digia Pulssi specific Zabbix Agent installation packages. The changes intr
 Download the latest installation packages from https://github.com/digiapulssi/zabbix-agent/releases/latest
 
 - CentOS / RedHat / Oracle Linux 5.x: zabbix-agent-pulssi-VERSION.el5.x86_64.rpm
-- CentOS / RedHat / Oracle Linux 6.x: zabbix-agent-pulssi-VERSION.el6.x86_64.rpm
-- CentOS / RedHat / Oracle Linux 7.x: zabbix-agent-pulssi-VERSION.el7.x86_64.rpm
+- CentOS / RedHat / Oracle Linux 6.x / Amazon Linux v1 (AMI versions 2017.09 or earlier): zabbix-agent-pulssi-VERSION.el6.x86_64.rpm
+- CentOS / RedHat / Oracle Linux 7.x / Amazon Linux v2 (AMI versions 2017.12 onwards): zabbix-agent-pulssi-VERSION.el7.x86_64.rpm
 - Debian 7 (Wheezy): zabbix-agent-pulssi_VERSION.wheezy-1_amd64.deb
 - Debian 8 (Jessie): zabbix-agent-pulssi_VERSION.jessie-1_amd64.deb
 - Debian 9 (Stretch): zabbix-agent-pulssi_VERSION.stretch-1_amd64.deb
@@ -28,11 +28,11 @@ In case you already have the official Zabbix Agent installed on your system,
 you should uninstall it before installing digiapulssi version.
 
 ```
-yum erase zabbix-agent (CentOS / RedHat / Orace Linux)
+yum erase zabbix-agent (CentOS / RedHat / Orace Linux / Amazon Linux)
 apt-get purge zabbix-agent (Debian)
 ```
 
-### Installation on CentOS / RedHat / Oracle Linux
+### Installation on CentOS / RedHat / Oracle Linux / Amazon Linux
 
 Install the downloaded RPM package with the following command:
 

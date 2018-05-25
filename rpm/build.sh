@@ -92,7 +92,7 @@ chmod 0755 $RPM_BUILD_ROOT%{_sysconfdir}/zabbix/scripts/* \
 # %files agent section
 sed -i '/^%dir %{_sysconfdir}\/zabbix\/zabbix_agentd.d/i %dir %{_sysconfdir}/zabbix/scripts' $RPMBUILD/SPECS/zabbix.spec
 # Add each script file individually to files section
-for scriptpath in scripts/*; do
+for scriptpath in /tmp/zabbix-monitoring-scripts/scripts/*; do
    scriptfile=$(basename $scriptpath)
    sed -i '/^%dir %{_sysconfdir}\/zabbix\/scripts/a %config(noreplace) %{_sysconfdir}/zabbix/scripts/'${scriptfile} $RPMBUILD/SPECS/zabbix.spec
 done
@@ -111,7 +111,7 @@ chmod 0644 $RPM_BUILD_ROOT%{_sysconfdir}/zabbix/zabbix_agentd.d/* \
 
 # %files agent section
 # Add each configuration file individually to files section
-for confpath in config/*; do
+for confpath in /tmp/zabbix-monitoring-scripts/zabbix_agentd.d/*; do
    conffile=$(basename $confpath)
    sed -i '/^%dir %{_sysconfdir}\/zabbix\/zabbix_agentd.d/a %config(noreplace) %{_sysconfdir}/zabbix/zabbix_agentd.d/'${conffile} $RPMBUILD/SPECS/zabbix.spec
 done
