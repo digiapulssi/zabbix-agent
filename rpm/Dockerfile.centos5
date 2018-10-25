@@ -15,7 +15,7 @@ RUN yum install -y rpm-build fedora-packager
 
 # Ruby must be >=1.8.7 which does not come for CentOS 5 without manual compiling..
 RUN yum install -y gcc zlib zlib-devel make
-RUN wget ftp://ftp.ruby-lang.org/pub/ruby/1.8/ruby-1.8.7-p330.tar.gz && \
+RUN wget https://cache.ruby-lang.org/pub/ruby/1.8/ruby-1.8.7-p330.tar.gz && \
     tar xvf ruby-1.8.7-p330.tar.gz && \
     cd ruby-1.8.7-p330 && \
     ./configure --enable-pthread && \
@@ -46,7 +46,7 @@ RUN chmod a+x /build.sh
 CMD /build.sh
 ENV ZABBIX_VERSION=3.4.4
 ENV ZABBIX_BRANCH=pulssi-$ZABBIX_VERSION
-ENV PULSSI_RELEASE_VERSION=3
+ENV PULSSI_RELEASE_VERSION=4
 ENV URL_ZABBIX_SRPM http://repo.zabbix.com/zabbix/3.4/rhel/5/SRPMS/zabbix-3.4.4-2.el5.src.rpm
 ENV RPMBUILD=/usr/src/redhat
 

@@ -20,22 +20,22 @@ pushd rpm
 sudo rm -fr RPMS/*
 
 # First build the package creation containers locally
-docker build -t zabbix-rpm:centos5 -f Dockerfile.centos5 .
+#docker build -t zabbix-rpm:centos5 -f Dockerfile.centos5 .
 docker build -t zabbix-rpm:centos6 -f Dockerfile.centos6 .
 docker build -t zabbix-rpm:centos7 -f Dockerfile.centos7 .
 
 # Download github packages for CentOS 5 build in host, because github requires TLS 1.2 which is not available
 # from inside CentOS 5 docker container
-wget -nv -O /tmp/pulssi-3.4.4.tar.gz https://github.com/digiapulssi/zabbix/tarball/pulssi-3.4.4
-wget -O /tmp/zabbix-monitoring-scripts.tar.gz https://github.com/digiapulssi/zabbix-monitoring-scripts/tarball/master
+#wget -nv -O /tmp/pulssi-3.4.4.tar.gz https://github.com/digiapulssi/zabbix/tarball/pulssi-3.4.4
+#wget -O /tmp/zabbix-monitoring-scripts.tar.gz https://github.com/digiapulssi/zabbix-monitoring-scripts/tarball/master
 
 # Run the following commands to produce new installation packages for different platforms
-docker run --rm -v $(pwd)/RPMS:/usr/src/redhat/RPMS -v /tmp/pulssi-3.4.4.tar.gz:/tmp/pulssi-3.4.4.tar.gz:ro -v /tmp/zabbix-monitoring-scripts.tar.gz:/tmp/zabbix-monitoring-scripts.tar.gz:ro zabbix-rpm:centos5
+#docker run --rm -v $(pwd)/RPMS:/usr/src/redhat/RPMS -v /tmp/pulssi-3.4.4.tar.gz:/tmp/pulssi-3.4.4.tar.gz:ro -v /tmp/zabbix-monitoring-scripts.tar.gz:/tmp/zabbix-monitoring-scripts.tar.gz:ro zabbix-rpm:centos5
 docker run --rm -v $(pwd)/RPMS:/root/rpmbuild/RPMS zabbix-rpm:centos6
 docker run --rm -v $(pwd)/RPMS:/root/rpmbuild/RPMS zabbix-rpm:centos7
 
 # Modify CentOS 5 package name to include "el5" tag similarly to the others
-sudo $RENAME 's/zabbix-agent-pulssi-([0-9.-]+)\.x86_64\.rpm/zabbix-agent-pulssi-$1.el5.x86_64.rpm/' RPMS/x86_64/*.rpm
+#sudo $RENAME 's/zabbix-agent-pulssi-([0-9.-]+)\.x86_64\.rpm/zabbix-agent-pulssi-$1.el5.x86_64.rpm/' RPMS/x86_64/*.rpm
 
 # Remove "centos" from CentOS 7 package name
 sudo $RENAME 's/zabbix-agent-pulssi-([0-9.-]+)\.el7\.centos\.x86_64\.rpm/zabbix-agent-pulssi-$1.el7.x86_64.rpm/' RPMS/x86_64/*.rpm

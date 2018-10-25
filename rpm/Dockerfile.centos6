@@ -10,7 +10,11 @@ RUN yum install -y ruby rubygems
 RUN gem install sass --version '=3.4.22'
 
 # Required by Zabbix SRPM spec that builds Zabbix server and proxy in addition to the agent
-RUN yum install -y mysql-devel postgresql-devel net-snmp-devel openldap-devel gnutls-devel sqlite-devel unixODBC-devel curl-devel OpenIPMI-devel java-devel libxml2-devel openssl-devel iksemel-devel libssh2-devel gettext
+RUN yum install -y mysql-devel postgresql-devel net-snmp-devel openldap-devel gnutls-devel sqlite-devel unixODBC-devel curl-devel OpenIPMI-devel java-devel libxml2-devel openssl-devel libssh2-devel gettext
+
+# Required by Zabbix SRPM spec that builds Zabbix server and proxy in addition to the agent. These have to be installed from Zabbix Official Repository
+RUN yum install -y https://repo.zabbix.com/non-supported/rhel/6/x86_64/iksemel-1.4-2.el6.x86_64.rpm
+RUN yum install -y https://repo.zabbix.com/non-supported/rhel/6/x86_64/iksemel-devel-1.4-2.el6.x86_64.rpm
 
 # Additional dependencies by Zabbix version 3.4
 RUN yum install -y libevent-devel pcre-devel
@@ -22,7 +26,7 @@ RUN chmod a+x /build.sh
 CMD /build.sh
 ENV ZABBIX_VERSION=3.4.4
 ENV ZABBIX_BRANCH=pulssi-$ZABBIX_VERSION
-ENV PULSSI_RELEASE_VERSION=3
+ENV PULSSI_RELEASE_VERSION=4
 ENV URL_ZABBIX_SRPM http://repo.zabbix.com/zabbix/3.4/rhel/6/SRPMS/zabbix-3.4.4-2.el6.src.rpm
 ENV RPMBUILD=/root/rpmbuild
 ENV JQ_DEPENDENCY=true
