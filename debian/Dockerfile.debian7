@@ -19,7 +19,7 @@ WORKDIR /build
 COPY build.sh /build.sh
 RUN chmod a+x /build.sh
 CMD ["/bin/bash", "/build.sh"]
-ENV ZABBIX_VERSION=3.4.4
+ENV ZABBIX_VERSION=3.4.10
 ENV ZABBIX_BRANCH=pulssi-$ZABBIX_VERSION
-ENV PULSSI_RELEASE_VERSION=5
-ENV URL_ZABBIX_DSC http://repo.zabbix.com/zabbix/3.4/debian/pool/main/z/zabbix/zabbix_3.4.4-4+wheezy.dsc
+ENV PULSSI_RELEASE_VERSION=1
+ENV URL_ZABBIX_DSC http://repo.zabbix.com/zabbix/3.4/debian/pool/main/z/zabbix/zabbix_3.4.10-1+wheezy.dsc

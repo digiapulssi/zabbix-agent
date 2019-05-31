@@ -24,10 +24,10 @@ WORKDIR /build
 COPY build.sh /build.sh
 RUN chmod a+x /build.sh
 CMD /build.sh
-ENV ZABBIX_VERSION=3.4.4
+ENV ZABBIX_VERSION=3.4.10
 ENV ZABBIX_BRANCH=pulssi-$ZABBIX_VERSION
-ENV PULSSI_RELEASE_VERSION=5
-ENV URL_ZABBIX_SRPM http://repo.zabbix.com/zabbix/3.4/rhel/6/SRPMS/zabbix-3.4.4-2.el6.src.rpm
+ENV PULSSI_RELEASE_VERSION=1
+ENV URL_ZABBIX_SRPM http://repo.zabbix.com/zabbix/3.4/rhel/6/SRPMS/zabbix-3.4.10-1.el6.src.rpm
 ENV RPMBUILD=/root/rpmbuild
 ENV JQ_DEPENDENCY=true
 
