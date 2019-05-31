@@ -1,15 +1,16 @@
-FROM debian:9
+FROM debian:buster
 
 # Zabbix agent build prerequisites
-RUN apt-get update && apt-get install -y build-essential devscripts quilt
-RUN apt-get install -y git autoconf autoconf automake wget unzip gcc pkg-config
+RUN apt-get update
+RUN apt-get install -y build-essential devscripts quilt
+RUN apt-get install -y git autoconf autoconf automake wget unzip gcc pkg-config rename
 
 # Required for Zabbix tarball compiling
 RUN apt-get install -y ruby rubygems
 RUN gem install sass --version '=3.4.22'
 
 # Required by packaging that builds Zabbix server and proxy in addition to the agent
-RUN apt-get install -y libsnmp-dev default-libmysqlclient-dev libpq-dev libsqlite3-dev libcurl4-openssl-dev libssl-dev libldap2-dev libiksemel-dev libopenipmi-dev libssh2-1-dev unixodbc-dev openjdk-8-jdk libxml2-dev
+RUN apt-get install -y libsnmp-dev default-libmysqlclient-dev libpq-dev libsqlite3-dev libcurl4-openssl-dev libssl-dev libldap2-dev libiksemel-dev libopenipmi-dev libssh2-1-dev unixodbc-dev openjdk-11-jdk libxml2-dev
 
 # Additional dependencies by Zabbix version 3.4
 RUN apt-get install -y libpcre++-dev libevent-dev
@@ -21,5 +22,5 @@ RUN chmod a+x /build.sh
 CMD ["/bin/bash", "/build.sh"]
 ENV ZABBIX_VERSION=3.4.10
 ENV ZABBIX_BRANCH=pulssi-$ZABBIX_VERSION
-ENV PULSSI_RELEASE_VERSION=1
+ENV PULSSI_RELEASE_VERSION=1+buster
 ENV URL_ZABBIX_DSC http://repo.zabbix.com/zabbix/3.4/debian/pool/main/z/zabbix/zabbix_3.4.10-1+stretch.dsc
